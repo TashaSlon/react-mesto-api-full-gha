@@ -1,0 +1,8 @@
+.popup__card-container {
+  position: relative;
+  z-index: 2;
+
+  padding: 0;
+
+  background-color: transparent;
+}

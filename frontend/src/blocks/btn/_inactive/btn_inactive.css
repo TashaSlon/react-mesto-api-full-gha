@@ -1,0 +1,10 @@
+.btn_inactive {
+  color: #C4C4C4;
+  background-color: #ffffff;
+  border: 1px solid #C4C4C4;
+  border-radius: 2px;
+}
+
+.btn_inactive:hover {
+  cursor: not-allowed;
+}

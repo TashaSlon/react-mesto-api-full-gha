@@ -1,0 +1,21 @@
+.btn_type_avatar-edit {
+  position: absolute;
+  top: 40%;
+  right: 40%;
+
+  display: none;
+
+  width: 26px;
+  height: 26px;
+
+  background-image: url(../../../images/edit.svg);
+  background-size: 26px 26px;
+  background-repeat: no-repeat;
+  background-position: center center;
+
+  border: none;
+}
+
+.btn_type_avatar-edit:hover {
+  opacity: 1;
+}

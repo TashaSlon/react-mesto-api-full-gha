@@ -1,0 +1,22 @@
+.auth__input {
+    width: 100%;
+  
+    margin: 0 0 30px;
+    padding: 0 0 13px;
+  
+    color: #fff;
+    font-size: 14px;
+    line-height: calc(16.94 / 14);
+    text-align: left;
+  
+    border: none;
+    border-bottom: 2px solid #CCCCCC;
+
+    background-color: transparent;
+  }
+  
+  .auth__input::-webkit-input-placeholder {color:#CCC;}
+  .auth__input::-moz-placeholder          {color:#CCC;}
+  .auth__input::-ms-input-placeholder     {color:#CCC;}
+  .auth__input::placeholder               {color:#CCC;}
+  

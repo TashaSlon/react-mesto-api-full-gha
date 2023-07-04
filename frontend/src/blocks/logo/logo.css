@@ -1,0 +1,23 @@
+.logo {
+  display: block;
+
+  width: 103.7px;
+  height: 24.4px;
+
+  padding-top: 28px;
+  padding-bottom: 32px;
+  padding-left: 27px;
+
+  color: #fff;
+}
+
+@media screen and (min-width: 918px) {
+  .logo {
+    width: 142px;
+    height: 33px;
+
+    padding-top: 45px;
+    padding-bottom: 41px;
+    padding-left: 0;
+  }
+}

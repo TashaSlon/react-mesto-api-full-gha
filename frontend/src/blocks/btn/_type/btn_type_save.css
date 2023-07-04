@@ -1,0 +1,26 @@
+.btn_type_save {
+  margin-top: 10px;
+  padding: 14px;
+
+  width: 100%;
+
+  color: #fff;
+
+  background-color: #000;
+  border: none;
+  border-radius: 2px;
+}
+
+.btn_type_save:hover {
+  opacity: 0.8;
+  cursor: pointer;
+}
+
+@media screen and (min-width: 515px) {
+  .btn_type_save {
+    margin-top: 7px;
+
+    font-size: 18px;
+    line-height: calc(21.78 / 18);
+  }
+}

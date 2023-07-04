@@ -1,0 +1,9 @@
+.popup__title-small {
+  margin: 0;
+  padding-top: 10px;
+
+  font-weight: 400;
+  font-size: 12px;
+  line-height: calc(15 / 12);
+  color: #FFFFFF;
+}
