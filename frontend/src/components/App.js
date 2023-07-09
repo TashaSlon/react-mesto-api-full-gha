@@ -12,7 +12,7 @@ import {EditAvatarPopup} from './EditAvatarPopup.js';
 import {AddPlacePopup} from './AddPlacePopup.js';
 import ProtectedRouteElement from './ProtectedRoute';
 import InfoTooltip from './InfoTooltip';
-import { getEmail, authorize, register } from '../utils/auth.js';
+import { getEmail, authorize, register,logout } from '../utils/auth.js';
 
 
 function App() {
@@ -30,22 +30,19 @@ function App() {
 
   const navigate = useNavigate();
 
-  useEffect(() => {
+  function tokenCheck() {
     getEmail()
     .then((res) => {
       if (res){
         setLoggedIn(true);
-        setUserData({
-          email: res.data.email
-        });
         navigate("/", {replace: true});
       }
     })
     .catch(err => console.log(`Ошибка.....: ${err}`))
-  },[]);
+  };
 
   useEffect(() => {
-
+    tokenCheck();
     if (loggedIn){
       api.getUserInfo()
         .then(userData => {
@@ -170,8 +167,15 @@ function App() {
   }
 
   function signOut(){
-    localStorage.removeItem('token');
-    navigate('/sign-in', {replace: true});
+    logout()
+    .then((res) => {
+      setLoggedIn(false);
+      navigate('/sign-in', {replace: true});
+    })
+    .catch(err => {
+      setStatus(false);
+      handleInfoTooltipClick(err);
+    });
   }
 
   return (

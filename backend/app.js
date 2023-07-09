@@ -6,7 +6,7 @@ const process = require('process');
 const { celebrate, Joi, errors } = require('celebrate');
 const cookieParser = require('cookie-parser');
 const {
-  createUser, login,
+  createUser, login, logout,
 } = require('./controllers/users');
 const routerUsers = require('./routes/users');
 const routerCards = require('./routes/cards');
@@ -81,8 +81,8 @@ app.post('/signup', celebrate({
   }),
 }), createUser);
 
-
 app.use(auth);
+app.use('/signout', logout);
 app.use('/users', routerUsers);
 app.use('/cards', routerCards);
 app.use('/*', (req, res, next) => {
