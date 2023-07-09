@@ -1,3 +1,4 @@
+require('dotenv').config();
 const jwtoken = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
 const User = require('../models/user');
@@ -48,11 +49,12 @@ module.exports.login = (req, res, next) => {
           if (isValidUser) {
             const jwt = jwtoken.sign({
               _id: user._id,
-            }, 'super-strong-secret');
+            }, process.env.JWT_SECRET);
             res.cookie('jwt', jwt, {
-              maxAge: 7 * 24 * 60 * 60 * 1000,
+              maxAge: 3600000 * 24 * 7,
               httpOnly: true,
-              sameSite: true,
+              sameSite: 'none',
+              secure: true,
             });
             res.send({ token: jwt });
           } else {
@@ -72,6 +74,7 @@ module.exports.getUsers = (req, res, next) => {
 };
 
 module.exports.getUser = (req, res, next) => {
+  console.log('hhhh');
   User.findById(req.params.userId)
     .orFail(() => new NotFoundError('Пользователь с указанным id не существует'))
     .then((user) => res.status(200).send(user))

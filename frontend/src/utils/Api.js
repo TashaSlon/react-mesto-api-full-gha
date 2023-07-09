@@ -1,13 +1,11 @@
 class Api {
-  constructor(baseUrl, token) {
+  constructor(baseUrl) {
     this._baseUrl = baseUrl;
-    this._token = token;
   }
 
   _getHeaders() {
     return {
       "Content-Type": "application/json",
-      authorization: this._token,
     };
   }
 
@@ -21,7 +19,8 @@ class Api {
   getUserInfo() {
     return fetch(`${this._baseUrl}/users/me`, {
       method: 'GET',
-      headers: this._getHeaders() })
+      headers: this._getHeaders(),
+      credentials: 'include' })
     .then(this._getJson);
   }
 
@@ -29,6 +28,7 @@ class Api {
     return fetch(`${this._baseUrl}/users/me`, {
       method: 'PATCH',
       headers: this._getHeaders(),
+      credentials: 'include',
       body: JSON.stringify({
         name: userData.name,
         about: userData.about
@@ -40,7 +40,8 @@ class Api {
   getCards() {
     return fetch(`${this._baseUrl}/cards`, {
       method: 'GET',
-      headers: this._getHeaders() })
+      headers: this._getHeaders(),
+      credentials: 'include' })
     .then(this._getJson);
   }
 
@@ -48,6 +49,7 @@ class Api {
     return fetch(`${this._baseUrl}/cards`, {
       method: 'POST',
       headers: this._getHeaders(),
+      credentials: 'include',
       body: JSON.stringify({
         name: cardData.name,
         link: cardData.link,
@@ -59,7 +61,8 @@ class Api {
   deleteCard(cardId) {
     return fetch(`${this._baseUrl}/cards/${cardId}`, {
       method: 'DELETE',
-      headers: this._getHeaders()
+      headers: this._getHeaders(),
+      credentials: 'include'
     })
     .then(this._getJson);
   }
@@ -68,13 +71,15 @@ class Api {
     if (!isLiked) {
       return fetch(`${this._baseUrl}/cards/${cardId}/likes`, {
         method: 'DELETE',
-        headers: this._getHeaders()
+        headers: this._getHeaders(),
+        credentials: 'include'
       })
       .then(this._getJson);
     } else {
       return fetch(`${this._baseUrl}/cards/${cardId}/likes`, {
         method: 'PUT',
-        headers: this._getHeaders()
+        headers: this._getHeaders(),
+        credentials: 'include'
       })
       .then(this._getJson);
     }
@@ -84,6 +89,7 @@ class Api {
     return fetch(`${this._baseUrl}/users/me/avatar`, {
       method: 'PATCH',
       headers: this._getHeaders(),
+      credentials: 'include',
       body: JSON.stringify({
         avatar: link
       })
@@ -92,6 +98,10 @@ class Api {
   }
 }
 
-export const api = new Api(
-  'https://mesto.nomoreparties.co/v1/cohort-61',
-  '711465c2-5680-4cab-85aa-d3a82c47b937');
+let BASE_URL = 'http://localhost:3000';
+if (process.env.NODE_ENV === 'production') {
+  BASE_URL = 'https://api.tashaslon.nomoreparties.sbs';
+}
+
+export const api = new Api(BASE_URL);
+export {BASE_URL};

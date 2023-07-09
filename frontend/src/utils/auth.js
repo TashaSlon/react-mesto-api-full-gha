@@ -1,4 +1,6 @@
-export const BASE_URL = 'https://auth.nomoreparties.co';
+
+const { BASE_URL } = require('./Api');
+
 
 function getJson(res) {
   if (res.ok) {
@@ -13,6 +15,7 @@ export const register = (password, email) => {
     headers: {
       'Content-Type': 'application/json'
     },
+    credentials: 'include',
     body: JSON.stringify({"password": password,
     "email": email })
   })
@@ -25,24 +28,25 @@ export const authorize = (password, email) => {
     headers: {
       'Content-Type': 'application/json'
     },
+    credentials: 'include',
     body: JSON.stringify({password, email})
   })
   .then(getJson)
   .then((data) => {
     if (data.token){
-      localStorage.setItem('token', data.token);
       return data;
     }
   });
-}; 
+};
 
 export const getEmail = () => {
   return fetch(`${BASE_URL}/users/me`, {
-    method: 'GET',
     headers: {
-      "Content-Type": "application/json",
-      "Authorization" : `Bearer ${localStorage.getItem('token')}`
-    }
+      "Accept": "application/json",
+      "Content-Type": "application/json"
+    },
+    credentials: 'include',
+    method: 'GET'
   })
   .then(getJson);
-}; 
+};

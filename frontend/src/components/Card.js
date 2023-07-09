@@ -3,12 +3,12 @@ import { CurrentUserContext } from "../contexts/CurrentUserContext";
 
 export function Card({card, onCardClick, onCardLike, onCardDelete}) {
   const currentUser = useContext(CurrentUserContext);
-  
-  const isOwn = card.owner._id === currentUser._id;
-  const isLiked = card.likes.some(i => i._id === currentUser._id);
-  const cardLikeButtonClassName = ( 
-    `btn btn_type_like ${isLiked && 'btn_type_like_active'}` 
-  );; 
+
+  const isOwn = card.owner === currentUser._id;
+  const isLiked = card.likes.some(i => i === currentUser._id);
+  const cardLikeButtonClassName = (
+    `btn btn_type_like ${isLiked && 'btn_type_like_active'}`
+  );;
 
   function handleClick() {
     onCardClick(card);
@@ -35,6 +35,6 @@ export function Card({card, onCardClick, onCardLike, onCardDelete}) {
           </div>
         </div>
       </div>
-    </li>   
+    </li>
   );
 }

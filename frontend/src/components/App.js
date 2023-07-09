@@ -29,10 +29,23 @@ function App() {
   const [status, setStatus] = useState(false);
 
   const navigate = useNavigate();
-  const token = localStorage.getItem('token');
 
   useEffect(() => {
-     
+    getEmail()
+    .then((res) => {
+      if (res){
+        setLoggedIn(true);
+        setUserData({
+          email: res.data.email
+        });
+        navigate("/", {replace: true});
+      }
+    })
+    .catch(err => console.log(`Ошибка.....: ${err}`))
+  },[]);
+
+  useEffect(() => {
+
     if (loggedIn){
       api.getUserInfo()
         .then(userData => {
@@ -41,7 +54,7 @@ function App() {
         .catch(err => console.log(`Ошибка.....: ${err}`))
     }},[loggedIn]);
 
-  useEffect(() => { 
+  useEffect(() => {
     if (loggedIn){
       api.getCards()
       .then(cards => {
@@ -49,23 +62,6 @@ function App() {
       })
       .catch(err => console.log(`Ошибка.....: ${err}`))
     }},[loggedIn]);
-
-  useEffect(() => {
-
-    if (token){
-      getEmail()
-      .then((res) => {
-        if (res){
-          setLoggedIn(true);
-          setUserData({
-            email: res.data.email
-          });
-          navigate("/", {replace: true});
-        }
-      })
-      .catch(err => console.log(`Ошибка.....: ${err}`))
-    }
-  }, [token])
 
   function handleEditAvatarClick() {
     setIsEditAvatarPopupOpen(true);
@@ -101,8 +97,8 @@ function App() {
 
   function handleCardLike(card) {
     // Снова проверяем, есть ли уже лайк на этой карточке
-    const isLiked = card.likes.some(i => i._id === currentUser._id);
-    
+    const isLiked = card.likes.some(i => i === currentUser._id);
+
     // Отправляем запрос в API и получаем обновлённые данные карточки
     api.changeLikeCardStatus(card._id, !isLiked)
     .then((newCard) => {
@@ -117,7 +113,7 @@ function App() {
         setCards((state) => state.filter((c) => c._id !== card._id));
     })
     .catch(err => console.log(`Ошибка.....: ${err}`))
-  } 
+  }
 
   function handleUpdateUser(userData) {
     api.setUserInfo(userData)
@@ -140,7 +136,7 @@ function App() {
   function handleAddPlaceSubmit(place) {
     api.addNewCard(place)
     .then((newCard) => {
-      setCards([newCard, ...cards]); 
+      setCards([newCard, ...cards]);
       closeAllPopups();
     })
     .catch(err => console.log(`Ошибка.....: ${err}`))
@@ -182,11 +178,11 @@ function App() {
     <CurrentUserContext.Provider value={currentUser}>
       <div className="page">
         <Routes>
-          <Route path="/" element={<ProtectedRouteElement 
+          <Route path="/" element={<ProtectedRouteElement
           element={Main} onEditProfile = {handleEditProfileClick}
-            onAddPlace = {handleAddPlaceClick} 
+            onAddPlace = {handleAddPlaceClick}
             onEditAvatar = {handleEditAvatarClick}
-            onCardClick = {handleCardClick} 
+            onCardClick = {handleCardClick}
             onCardLike = {handleCardLike}
             cards = {cards}
             onCardDelete = {handleCardDelete}
@@ -208,20 +204,20 @@ function App() {
         <EditAvatarPopup isOpen={isEditAvatarPopupOpen} onClose={closeAllPopups} onUpdateAvatar={handleUpdateAvatar}/>
         <AddPlacePopup isOpen={isAddPlacePopupOpen} onClose={closeAllPopups} onAddPlace={handleAddPlaceSubmit}/>
         <InfoTooltip isOpen={isInfoTooltipOpen} onClose={closeAllPopups} status={status}/>
-  
-        <PopupWithForm 
-          name='submit' 
-          title='Вы уверены?' 
-          isOpen={isSubmitPopupOpen} 
+
+        <PopupWithForm
+          name='submit'
+          title='Вы уверены?'
+          isOpen={isSubmitPopupOpen}
           onClose={closeAllPopups}
           buttonText='Да'
         />
 
-        <ImagePopup 
-          card={selectedCard} 
+        <ImagePopup
+          card={selectedCard}
           onClose={closeAllPopups}
         />
-      
+
       </div>
     </CurrentUserContext.Provider>
   );

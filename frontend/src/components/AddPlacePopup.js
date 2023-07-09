@@ -1,11 +1,11 @@
 import PopupWithForm from './PopupWithForm.js';
-import { useState, useContext, useEffect } from "react";
+import { useState, useContext } from "react";
 import { CurrentUserContext } from "../contexts/CurrentUserContext";
 
 export function AddPlacePopup({isOpen, onClose, onAddPlace}) {
     const currentUser = useContext(CurrentUserContext);
     const [name, setName] = useState('');
-    const [link, setLink] = useState(''); 
+    const [link, setLink] = useState('');
 
     function handleNameChange(e) {
         setName(e.target.value);
@@ -24,7 +24,7 @@ export function AddPlacePopup({isOpen, onClose, onAddPlace}) {
     function handleSubmit(e) {
         // Запрещаем браузеру переходить по адресу формы
         e.preventDefault();
-      
+
         // Передаём значения управляемых компонентов во внешний обработчик
         onAddPlace({
           name,
@@ -35,9 +35,9 @@ export function AddPlacePopup({isOpen, onClose, onAddPlace}) {
 
     return (
         <>
-            <PopupWithForm 
-          name='add' title='Новое место' 
-          isOpen={isOpen} 
+            <PopupWithForm
+          name='add' title='Новое место'
+          isOpen={isOpen}
           onClose={handleClose}
           buttonText='Сохранить'
           onSubmit={handleSubmit}>
