@@ -17,42 +17,39 @@ const NotFoundError = require('./errors/not-found-err');
 const { PORT = 3000 } = process.env;
 const app = express();
 
-console.log(process.env.NODE_ENV);
-
 const allowedCors = [
   'https://tashaslon.nomoreparties.sbs',
   'http://tashaslon.nomoreparties.sbs',
   'http://localhost:3001',
-  'http://localhost:3000'
+  'http://localhost:3000',
 ];
 
 mongoose.connect('mongodb://localhost:27017/mestodb', {
 });
 app.use(express.json());
 
-app.use(function(req, res, next) {
+app.use((req, res, next) => {
   const { origin } = req.headers; // Сохраняем источник запроса в переменную origin
   // проверяем, что источник запроса есть среди разрешённых
   if (allowedCors.includes(origin)) {
     res.header('Access-Control-Allow-Origin', origin);
-    res.header('Access-Control-Allow-Credentials', 'true' );
+    res.header('Access-Control-Allow-Credentials', 'true');
   }
 
   const { method } = req;
 
-  const DEFAULT_ALLOWED_METHODS = "GET,HEAD,PUT,PATCH,POST,DELETE";
+  const DEFAULT_ALLOWED_METHODS = 'GET,HEAD,PUT,PATCH,POST,DELETE';
   const requestHeaders = req.headers['access-control-request-headers'];
 
   // Если это предварительный запрос, добавляем нужные заголовки
   if (method === 'OPTIONS') {
-      // разрешаем кросс-доменные запросы любых типов (по умолчанию)
-      res.header('Access-Control-Allow-Methods', DEFAULT_ALLOWED_METHODS);
-      res.header('Access-Control-Allow-Headers', requestHeaders);
-      // завершаем обработку запроса и возвращаем результат клиенту
-      return res.end();
+    // разрешаем кросс-доменные запросы любых типов (по умолчанию)
+    res.header('Access-Control-Allow-Methods', DEFAULT_ALLOWED_METHODS);
+    res.header('Access-Control-Allow-Headers', requestHeaders);
   }
 
   next();
+  return res.end();
 });
 
 app.use(bodyParser.json());
@@ -82,7 +79,6 @@ app.post('/signup', celebrate({
     avatar: Joi.string().regex(/^https?:\/\/(?:www\.)?[-a-zA-Z0-9@:%._+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b(?:[-a-zA-Z0-9()@:%_+.~#?&/=]*)$/),
   }),
 }), createUser);
-
 
 app.use(auth);
 app.use('/users', routerUsers);
