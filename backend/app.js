@@ -46,10 +46,11 @@ app.use((req, res, next) => {
     // разрешаем кросс-доменные запросы любых типов (по умолчанию)
     res.header('Access-Control-Allow-Methods', DEFAULT_ALLOWED_METHODS);
     res.header('Access-Control-Allow-Headers', requestHeaders);
+    return res.end();
   }
 
   next();
-  return res.end();
+  return res;
 });
 
 app.use(bodyParser.json());
@@ -79,6 +80,7 @@ app.post('/signup', celebrate({
     avatar: Joi.string().regex(/^https?:\/\/(?:www\.)?[-a-zA-Z0-9@:%._+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b(?:[-a-zA-Z0-9()@:%_+.~#?&/=]*)$/),
   }),
 }), createUser);
+
 
 app.use(auth);
 app.use('/users', routerUsers);
