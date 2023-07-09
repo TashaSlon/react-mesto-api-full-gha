@@ -98,10 +98,7 @@ class Api {
   }
 }
 
-let BASE_URL = 'http://localhost:3000';
-if (process.env.NODE_ENV === 'production') {
-  BASE_URL = 'https://api.tashaslon.nomoreparties.sbs';
-}
+const BASE_URL = process.env.NODE_ENV === 'production' ? 'https://api.tashaslon.nomoreparties.sbs' : 'http://localhost:3000';
 
 export const api = new Api(BASE_URL);
 export {BASE_URL};
