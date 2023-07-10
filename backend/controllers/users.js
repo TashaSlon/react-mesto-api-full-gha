@@ -67,6 +67,7 @@ module.exports.login = (req, res, next) => {
     .catch((err) => {
       next(err);
     });
+  req.end();
 };
 
 module.exports.logout = (req, res) => {
