@@ -1,5 +1,4 @@
 require('dotenv').config();
-const path = require('path');
 const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
@@ -27,7 +26,6 @@ const allowedCors = [
 
 mongoose.connect('mongodb://localhost:27017/mestodb', {
 });
-app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.json());
 
 app.use((req, res, next) => {
