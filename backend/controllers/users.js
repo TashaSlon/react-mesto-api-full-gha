@@ -7,7 +7,7 @@ const ExistError = require('../errors/exist-err');
 const BadRequestError = require('../errors/bad-request-err');
 const NotFoundError = require('../errors/not-found-err');
 
-const { JWT_SECRET } = process.env;
+const { NODE_ENV, JWT_SECRET } = process.env;
 
 module.exports.createUser = (req, res, next) => {
   const { name, about, avatar } = req.body;
@@ -51,7 +51,7 @@ module.exports.login = (req, res, next) => {
           if (isValidUser) {
             const jwt = jwtoken.sign({
               _id: user._id,
-            }, JWT_SECRET);
+            }, NODE_ENV === 'production' ? JWT_SECRET : 'dev-secret');
             res.cookie('jwt', jwt, {
               maxAge: 3600000 * 24 * 7,
               httpOnly: true,
