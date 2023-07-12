@@ -2,7 +2,6 @@ require('dotenv').config();
 const jwtoken = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
 const User = require('../models/user');
-const NotAllowError = require('../errors/not-allow-err');
 const ExistError = require('../errors/exist-err');
 const BadRequestError = require('../errors/bad-request-err');
 const NotFoundError = require('../errors/not-found-err');
@@ -46,23 +45,16 @@ module.exports.login = (req, res, next) => {
 
   User.findUserByCredentials(email, password)
     .then((user) => {
-      bcrypt.compare(String(password), user.password)
-        .then((isValidUser) => {
-          if (isValidUser) {
-            const jwt = jwtoken.sign({
-              _id: user._id,
-            }, NODE_ENV === 'production' ? JWT_SECRET : 'dev-secret');
-            res.cookie('jwt', jwt, {
-              maxAge: 3600000 * 24 * 7,
-              httpOnly: true,
-              sameSite: 'none',
-              secure: true,
-            });
-            res.send({ token: jwt });
-          } else {
-            throw new NotAllowError('Указаны неверные логин или пароль');
-          }
-        });
+      const jwt = jwtoken.sign({
+        _id: user._id,
+      }, NODE_ENV === 'production' ? JWT_SECRET : 'dev-secret');
+      res.cookie('jwt', jwt, {
+        maxAge: 3600000 * 24 * 7,
+        httpOnly: true,
+        sameSite: 'none',
+        secure: true,
+      });
+      res.send({ message: 'Пользователь авторизован' });
     })
     .catch((err) => {
       next(err);

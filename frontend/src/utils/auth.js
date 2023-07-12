@@ -33,10 +33,7 @@ export const authorize = (password, email) => {
   })
   .then(getJson)
   .then((data) => {
-    if (data.token){
-      return data;
-    }
-  });
+    return data;});
 };
 
 export const logout = () => {

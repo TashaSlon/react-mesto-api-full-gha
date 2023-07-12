@@ -24,10 +24,6 @@ const allowedCors = [
   'http://localhost:3000',
 ];
 
-mongoose.connect('mongodb://localhost:27017/mestodb', {
-});
-app.use(express.json());
-
 app.use((req, res, next) => {
   const { origin } = req.headers; // Сохраняем источник запроса в переменную origin
   // проверяем, что источник запроса есть среди разрешённых
@@ -52,6 +48,10 @@ app.use((req, res, next) => {
   next();
   return res;
 });
+
+mongoose.connect('mongodb://localhost:27017/mestodb', {
+});
+app.use(express.json());
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -84,6 +84,7 @@ app.post('/signup', celebrate({
 app.use(auth);
 app.use('/signout', logout);
 app.use('/users', routerUsers);
+
 app.use('/cards', routerCards);
 app.use('/*', (req, res, next) => {
   next(new NotFoundError('Данной страницы не существует'));

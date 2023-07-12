@@ -8,7 +8,7 @@ module.exports.createCard = (req, res, next) => {
 
   Card.create(
     {
-      name, link, owner: req.user._id, likes: [],
+      name, link, owner: req.user._id,
     },
   )
     .then((card) => res.status(201).send(card))
@@ -33,7 +33,7 @@ module.exports.deleteCard = (req, res, next) => {
   Card.findById(req.params.cardId)
     .orFail(() => new NotFoundError('Пользователь с указанным id не существует'))
     .then((card) => {
-      if (card.owner === req.user._id) {
+      if (card.owner.toString() === req.user._id) {
         Card.findByIdAndRemove(req.params.cardId)
           .then((item) => res.send(item))
           .catch((err) => {

@@ -141,12 +141,10 @@ function App() {
 
   function handleLogin(password, email) {
     authorize(password, email)
-      .then((res) => {
+      .then(() => {
           setUserData(email);
-          if (res.token) {
-              setLoggedIn(true);
-              navigate('/', {replace: true});
-            }
+          setLoggedIn(true);
+          navigate('/', {replace: true});
       })
       .catch(err => {
         setStatus(false);
